@@ -300,7 +300,7 @@ SOFTWARE.
 
   <xsl:template match="sch:rule" mode="transpile" as="element(xsl:template)">
     <xsl:param name="mode" as="xs:string" required="true"/>
-    <alias:template match="{@context}" mode="{$mode}">
+    <alias:template match="{@context}" mode="{$mode}" priority="{last() - position()}">
       <alias:param name="redux:pattern" as="xs:string*" select="()"/>
 
       <alias:choose>
