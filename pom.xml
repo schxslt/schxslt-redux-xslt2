@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>name.dmaus.schxslt</groupId>
   <artifactId>schxslt-redux-xslt2</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 
   <name>SchXslt Redux XSLT2</name>
   <url>https://doi.org/10.5281/zenodo.7368576</url>
