@@ -305,7 +305,9 @@ SOFTWARE.
 
       <alias:choose>
         <alias:when test="'{generate-id(..)}' = $redux:pattern">
-          <alias:next-match/>
+          <alias:next-match>
+            <alias:with-param name="redux:pattern" as="xs:string+" select="$redux:pattern"/>
+          </alias:next-match>
         </alias:when>
         <alias:otherwise>
           <svrl:fired-rule>
