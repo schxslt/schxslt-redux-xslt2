@@ -7,14 +7,20 @@
     <xsl:param name="context" as="node()"/>
     <xsl:value-of>
       <xsl:for-each select="$context/ancestor::*">
-        <xsl:variable name="position" as="xs:integer" select="1 + count(preceding-sibling::*)"/>
+        <xsl:variable name="position" as="xs:integer">
+          <xsl:number/>
+        </xsl:variable>
         <xsl:value-of select="concat('/Q{', namespace-uri(), '}', local-name())"/>
         <xsl:value-of select="concat('[', $position, ']')"/>
       </xsl:for-each>
       <xsl:value-of select="'/'"/>
       <xsl:choose>
         <xsl:when test="$context/self::*">
-          <xsl:variable name="position" as="xs:integer" select="1 + count($context/preceding-sibling::*)"/>
+          <xsl:variable name="position" as="xs:integer">
+            <xsl:for-each select="$context">
+              <xsl:number/>
+            </xsl:for-each>
+          </xsl:variable>
           <xsl:value-of select="concat('Q{', namespace-uri($context), '}', local-name($context))"/>
           <xsl:value-of select="concat('[', $position, ']')"/>
         </xsl:when>
