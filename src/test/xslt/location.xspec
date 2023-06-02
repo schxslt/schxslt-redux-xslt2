@@ -1,0 +1,13 @@
+<xspec:description xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                   xmlns:redux="https://doi.org/10.5281/zenodo.7368576"
+                   xslt-version="2.0"
+                   stylesheet="../../main/resources/content/location.xsl">
+  <xspec:scenario label="Calculating the position of an element node w/o preceding sibling of the same type">
+    <xspec:call function="redux:location">
+      <xspec:param name="context" as="node()" select="/html/body">
+        <html><head/><body/></html>
+      </xspec:param>
+    </xspec:call>
+    <xspec:expect test="$xspec:result eq '/Q{}html[1]/Q{}body[1]'"/>
+  </xspec:scenario>
+</xspec:description>
