@@ -250,6 +250,12 @@ SOFTWARE.
       <alias:template match="/">
         <svrl:schematron-output>
           <xsl:copy-of select="@schemaVersion"/>
+          <xsl:for-each select="sch:ns">
+            <svrl:ns-prefix-in-attribute-values>
+              <xsl:sequence select="@uri"/>
+              <xsl:sequence select="@prefix"/>
+            </svrl:ns-prefix-in-attribute-values>
+          </xsl:for-each>
           <xsl:for-each-group select="key('patternByPhase', $phase)" group-by="string(@documents)">
             <alias:call-template name="{generate-id()}"/>
           </xsl:for-each-group>
