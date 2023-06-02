@@ -10,4 +10,12 @@
     </xspec:call>
     <xspec:expect test="$xspec:result eq '/Q{}html[1]/Q{}body[1]'"/>
   </xspec:scenario>
+  <xspec:scenario label="Calculating the position of an element node with a preceding sibling of the same type">
+    <xspec:call function="redux:location">
+      <xspec:param name="context" as="node()" select="/html/body/div[2]">
+        <html><head/><body><div/><div/></body></html>
+      </xspec:param>
+    </xspec:call>
+    <xspec:expect test="$xspec:result eq '/Q{}html[1]/Q{}body[1]/Q{}div[2]'"/>
+  </xspec:scenario>
 </xspec:description>
