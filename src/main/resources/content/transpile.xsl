@@ -371,10 +371,10 @@ SOFTWARE.
         <xsl:variable name="diagnostic" as="element(sch:diagnostic)"
                       select="(key('diagnosticById', ., $context/ancestor::sch:pattern), key('diagnosticById', ., $context/ancestor::sch:schema))[1]"/>
         <xsl:sequence select="$diagnostic/@xml:*"/>
-        <xsl:sequence select="$diagnostic/@see"/>
-        <xsl:sequence select="$diagnostic/@icon"/>
-        <xsl:sequence select="$diagnostic/@fpi"/>
         <svrl:text>
+          <xsl:sequence select="$diagnostic/@see"/>
+          <xsl:sequence select="$diagnostic/@icon"/>
+          <xsl:sequence select="$diagnostic/@fpi"/>
           <xsl:apply-templates select="$diagnostic/node()" mode="message-content"/>
         </svrl:text>
       </svrl:diagnostic-reference>
