@@ -248,7 +248,7 @@ SOFTWARE.
       <xsl:sequence select="xsl:function[not(preceding-sibling::sch:pattern)]"/>
 
       <alias:template match="/">
-        <svrl:schematron-output>
+        <svrl:schematron-output phase="{$phase}">
           <xsl:copy-of select="@schemaVersion"/>
           <xsl:for-each select="sch:ns">
             <svrl:ns-prefix-in-attribute-values>
