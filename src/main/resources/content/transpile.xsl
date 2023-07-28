@@ -37,6 +37,10 @@ SOFTWARE.
 
   <xsl:key name="patternByPhase" match="sch:pattern" use="../sch:phase[current()/@id = sch:active/@pattern]/@id"/>
   <xsl:key name="patternByPhase" match="sch:pattern" use="'#ALL'"/>
+  <!-- SEP 25: https://github.com/Schematron/schematron-enhancement-proposals/issues/25 -->
+  <xsl:key name="patternByPhase" match="sch:rule-set" use="../sch:phase[current()/@id = sch:active/@pattern]/@id"/>
+  <xsl:key name="patternByPhase" match="sch:rule-set" use="'#ALL'"/>
+
   <xsl:key name="diagnosticById" match="sch:diagnostic" use="@id"/>
   <xsl:key name="propertyById" match="sch:property" use="@id"/>
 
@@ -266,10 +270,20 @@ SOFTWARE.
         <xsl:variable name="mode" as="xs:string" select="generate-id()"/>
 
         <alias:template name="{$mode}">
-          <svrl:active-pattern>
-            <xsl:sequence select="@id"/>
-            <alias:attribute name="documents" select="{if (@documents) then @documents else 'document-uri(.)'}"/>
-          </svrl:active-pattern>
+          <xsl:choose>
+            <xsl:when test="self::sch:pattern">
+              <svrl:active-pattern>
+                <xsl:sequence select="@id"/>
+                <alias:attribute name="documents" select="{if (@documents) then @documents else 'document-uri(.)'}"/>
+              </svrl:active-pattern>
+            </xsl:when>
+            <xsl:otherwise>
+              <svrl:active-rule-set>
+                <xsl:sequence select="@id"/>
+                <alias:attribute name="documents" select="{if (@documents) then @documents else 'document-uri(.)'}"/>
+              </svrl:active-rule-set>
+            </xsl:otherwise>
+          </xsl:choose>
 
           <xsl:choose>
             <xsl:when test="@documents">
@@ -311,7 +325,7 @@ SOFTWARE.
       <alias:param name="redux:pattern" as="xs:string*" select="()"/>
 
       <alias:choose>
-        <alias:when test="'{generate-id(..)}' = $redux:pattern">
+        <alias:when test="../sch:pattern and ('{generate-id(..)}' = $redux:pattern)">
           <alias:next-match>
             <alias:with-param name="redux:pattern" as="xs:string+" select="$redux:pattern"/>
           </alias:next-match>
@@ -331,7 +345,14 @@ SOFTWARE.
           </xsl:call-template>
           <xsl:apply-templates select="sch:assert | sch:report" mode="#current"/>
           <alias:next-match>
-            <alias:with-param name="redux:pattern" as="xs:string+" select="('{generate-id(..)}', $redux:pattern)"/>
+            <xsl:choose>
+              <xsl:when test="../sch:pattern">
+                <alias:with-param name="redux:pattern" as="xs:string+" select="('{generate-id(..)}', $redux:pattern)"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <alias:with-param name="redux:pattern" as="xs:string*" select="$redux:pattern"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </alias:next-match>
         </alias:otherwise>
       </alias:choose>
